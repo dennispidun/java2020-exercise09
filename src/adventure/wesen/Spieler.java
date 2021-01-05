@@ -93,7 +93,7 @@ public class Spieler extends Wesen {
     public void zug(Dungeon dungeon) {
         updateVerteidigungUndStaerken();
         dungeon.listeMonsterAuf();
-        this.zustand();
+        System.out.println(this.zustand());
         // mMn. etwas unsauber, da das Einlesen von Daten nicht Teil
         // der Spieler Klasse sein sollte, der aktuelle Stand von Java gibt jedoch nicht mehr her
         // ...bla bla seperation of concerns

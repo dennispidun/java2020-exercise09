@@ -2,8 +2,10 @@ package adventure;
 
 import adventure.util.Zufall;
 import adventure.wesen.Spieler;
-import adventure.wesen.monster.Monster;
+import adventure.wesen.monster.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Dungeon {
@@ -23,15 +25,30 @@ public class Dungeon {
     public void listeMonsterAuf() {
         System.out.println("Monster:");
         for (int i = 0; i < this.monster.length; i++) {
-            System.out.println(" " + i + ") " + this.monster[i].getBezeichnung());
+            System.out.println(" " + (i + 1) + ") " + this.monster[i].getBezeichnung());
         }
     }
 
     private Monster erstelleZufaelligesMonster() {
-        return null;
+        int monster = Zufall.zufallswert(0, 4);
+        if (monster == 0) {
+            return new Goblin();
+        } else if (monster == 2) {
+            return new Nachtelf();
+        } else if (monster == 3) {
+            return new Oger();
+        } else {
+            return new Ork();
+        }
     }
 
     private boolean mindestensEinMonsterLebtNoch() {
+        for (Monster m : monster) {
+            if (!m.istTot()) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -40,7 +57,14 @@ public class Dungeon {
     }
 
     public Monster getZufaelligesLebendesMonster() {
-        return null;
+        List<Monster> lebendeMonster = new ArrayList<Monster>();
+        for (Monster m : monster) {
+            if (!m.istTot()) {
+                lebendeMonster.add(m);
+            }
+        }
+
+        return lebendeMonster.get(Zufall.zufallswert(0, lebendeMonster.size()));
     }
 
     public Monster getMonster(int index) {
@@ -55,7 +79,13 @@ public class Dungeon {
         do {
             this.spieler.zug(this);
             this.getZufaelligesLebendesMonster().zug(this);
-        } while(!this.spieler.istTot() && getZufaelligesLebendesMonster() != null);
+        } while(!this.spieler.istTot() && mindestensEinMonsterLebtNoch());
+
+        if (this.spieler.istTot()) {
+            System.out.println(this.spieler.getBezeichnung() + " hat leider verloren.");
+        } else {
+            System.out.println(this.spieler.getBezeichnung() + " hat die Monster besiegt.");
+        }
     }
 
     public static void main(String[] args) {
@@ -64,7 +94,7 @@ public class Dungeon {
         System.out.print("Bitte geben Sie Ihren Namen ein: ");
         String name = scanner.nextLine();
 
-        Dungeon dungeon = new Dungeon("Hubert");
+        Dungeon dungeon = new Dungeon(name);
         dungeon.imGoingOnAnAdventure();
     }
 

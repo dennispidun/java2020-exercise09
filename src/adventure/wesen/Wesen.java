@@ -19,11 +19,14 @@ public class Wesen {
     }
 
     public void angriff(Wesen ziel) {
+        int schadenspunkte = (int) (this.waffenstaerke + this.waffenstaerke * this.kraft);
         System.out.println(this.getBezeichnung() + " greif " + ziel.getBezeichnung() + " an");
+        ziel.schaden(schadenspunkte);
     }
 
     protected void schaden(int schadenspunkte) {
         int schaden = (int) (schadenspunkte - schadenspunkte*verteidigungswert);
+        this.lebenspunkte -= schaden;
         System.out.println(this.getBezeichnung() + " bekommt " + schaden + " Schaden");
     }
 
