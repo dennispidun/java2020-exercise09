@@ -4,6 +4,8 @@ import adventure.util.Zufall;
 import adventure.wesen.Spieler;
 import adventure.wesen.monster.Monster;
 
+import java.util.Scanner;
+
 public class Dungeon {
 
     private Spieler spieler;
@@ -15,6 +17,13 @@ public class Dungeon {
 
         for (int i = 0; i < this.monster.length; i++) {
             this.monster[i] = erstelleZufaelligesMonster();
+        }
+    }
+
+    public void listeMonsterAuf() {
+        System.out.println("Monster:");
+        for (int i = 0; i < this.monster.length; i++) {
+            System.out.println(" " + i + ") " + this.monster[i].getBezeichnung());
         }
     }
 
@@ -43,10 +52,18 @@ public class Dungeon {
     }
 
     public void imGoingOnAnAdventure() {
-
+        do {
+            this.spieler.zug(this);
+            this.getZufaelligesLebendesMonster().zug(this);
+        } while(!this.spieler.istTot() && getZufaelligesLebendesMonster() != null);
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Bitte geben Sie Ihren Namen ein: ");
+        String name = scanner.nextLine();
+
         Dungeon dungeon = new Dungeon("Hubert");
         dungeon.imGoingOnAnAdventure();
     }

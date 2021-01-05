@@ -19,11 +19,12 @@ public class Wesen {
     }
 
     public void angriff(Wesen ziel) {
-
+        System.out.println(this.getBezeichnung() + " greif " + ziel.getBezeichnung() + " an");
     }
 
     protected void schaden(int schadenspunkte) {
-
+        int schaden = (int) (schadenspunkte - schadenspunkte*verteidigungswert);
+        System.out.println(this.getBezeichnung() + " bekommt " + schaden + " Schaden");
     }
 
     public boolean istTot() {
